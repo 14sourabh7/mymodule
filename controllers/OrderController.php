@@ -20,21 +20,15 @@ class OrderController extends BaseController
     public function addAction()
     {
         $obj = new Order();
-        $product = new Product();
-        $container = $product->getCollectionForTable(false);
+
         $product_id = $this->helper->sanitize($this->request->getPost('product_id'));
         $quantity = $this->helper->sanitize($this->request->getPost('quantity'));
         $status = "Order Placed";
 
         if ($product_id && $quantity) {
-            $id = new \MongoDB\BSON\ObjectID($product_id);
-            $product =   $container->find(['_id' => $id]);
-            $product = iterator_to_array($product);
-            $product =  count($product);
-            if ($product < 1) {
-                $this->response->setStatusCode(406);
-                return $this->response->setJsonContent(['error' => 'product does not exist']);
-            }
+
+            if (!$this->checkProductExist($product_id))
+                return $this->response->setJsonContent(['error' => 'product doesnot exists']);
 
             $obj->product_id = $product_id;
             $obj->quantity = $quantity;
@@ -88,5 +82,18 @@ class OrderController extends BaseController
         }
         $this->response->setStatusCode(406);
         return $this->response->setJsonContent(['error' => 'id is required']);
+    }
+    public function checkProductExist($product_id)
+    {
+        $product = new Product();
+        $container = $product->getCollectionForTable(false);
+        $id = new \MongoDB\BSON\ObjectID($product_id);
+        $product =   $container->find(['_id' => $id]);
+        $product = iterator_to_array($product);
+        $product =  count($product);
+        if ($product < 1) {
+            return false;
+        }
+        return true;
     }
 }
