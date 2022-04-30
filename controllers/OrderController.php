@@ -39,6 +39,7 @@ class OrderController extends BaseController
             $obj->product_id = $product_id;
             $obj->quantity = $quantity;
             $obj->status = $status;
+            $obj->date = date('Y-m-d');
             $result = $obj->save();
             $id = ((array)$obj->_id)['oid'];
 

@@ -24,7 +24,7 @@ class ProductController extends BaseController
         $price = $this->helper->sanitize($this->request->getPost('price'));
         $category = $this->helper->sanitize($this->request->getPost('category'));
 
-        if ($name && $price && $category) {
+        if ($name && $name && $category) {
             $obj->name = $name;
             $obj->price = $price;
             $obj->category = $category;
