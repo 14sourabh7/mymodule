@@ -35,9 +35,10 @@ class ProductController extends BaseController
                 $this->response->setStatusCode(200);
                 return $this->response->setJsonContent(['success' => 'product added with id: ' . $id]);
             }
+            $this->response->setStatusCode(400);
             return $this->response->setJsonContent(['error' => 'product not added']);
         }
-
+        $this->response->setStatusCode(406);
         return $this->response->setJsonContent(['error' => 'name price and category required']);
     }
 
@@ -58,6 +59,7 @@ class ProductController extends BaseController
             $container->updateOne(['_id' => $id], ['$set' => $updateItems]);
             return $this->response->setJsonContent(['success' => 'updated']);
         }
+        $this->response->setStatusCode(406);
         return $this->response->setJsonContent(['error' => 'id is required']);
     }
 
@@ -71,6 +73,7 @@ class ProductController extends BaseController
             $container->deleteOne(['_id' => $idx]);
             return $this->response->setJsonContent(['success' => 'item deleted id: ' . $id]);
         }
+        $this->response->setStatusCode(406);
         return $this->response->setJsonContent(['error' => 'id is required']);
     }
 }

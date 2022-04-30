@@ -32,6 +32,7 @@ class OrderController extends BaseController
             $product = iterator_to_array($product);
             $product =  count($product);
             if ($product < 1) {
+                $this->response->setStatusCode(406);
                 return $this->response->setJsonContent(['error' => 'product does not exist']);
             }
 
@@ -45,9 +46,10 @@ class OrderController extends BaseController
                 $this->response->setStatusCode(200);
                 return $this->response->setJsonContent(['success' => 'order placed with id: ' . $id]);
             }
+            $this->response->setStatusCode(400);
             return $this->response->setJsonContent(['error' => 'unable to place order']);
         }
-
+        $this->response->setStatusCode(406);
         return $this->response->setJsonContent(['error' => 'product_id and quantity is required']);
     }
 
@@ -68,6 +70,7 @@ class OrderController extends BaseController
             $container->updateOne(['_id' => $id], ['$set' => ['status' => $updateItems['status']]]);
             return $this->response->setJsonContent(['success' => 'updated']);
         }
+        $this->response->setStatusCode(406);
         return $this->response->setJsonContent(['error' => 'id and status are required']);
     }
 
@@ -82,6 +85,7 @@ class OrderController extends BaseController
             $container->deleteOne(['_id' => $idx]);
             return $this->response->setJsonContent(['success' => 'item deleted id: ' . $id]);
         }
+        $this->response->setStatusCode(406);
         return $this->response->setJsonContent(['error' => 'id is required']);
     }
 }
