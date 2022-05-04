@@ -76,4 +76,13 @@ class ProductController extends BaseController
         $this->response->setStatusCode(406);
         return $this->response->setJsonContent(['error' => 'id is required']);
     }
+
+    public function getProductFromRemoteAction()
+    {
+        $remoteResponse = $this->di->getObjectManager()->get("\App\Connector\Components\ApiClient")
+            ->init("mymodulewebapi", true)
+            ->call("getProduct", array(), array(), "GET");
+
+        print_r($remoteResponse);
+    }
 }
